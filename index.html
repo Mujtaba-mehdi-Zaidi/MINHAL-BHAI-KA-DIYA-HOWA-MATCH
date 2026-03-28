@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolarOS v3.0 | Material Science Edition</title>
+    <title>SolarOS v3.0 | All-Device Responsive</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,120 +22,131 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
+            align-items: flex-start; /* Better for scrolling on mobile */
+            padding: 15px;
         }
 
+        /* Main Container: Grid for Desktop, Flex/Single Column for Mobile */
         .app-container {
-            width: 95%;
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1100px;
             display: grid;
-            grid-template-columns: 350px 1fr;
+            grid-template-columns: 1fr; /* Mobile first */
             gap: 20px;
             background: var(--glass);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 15px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            margin-top: 10px;
+        }
+
+        /* Desktop Layout (992px and up) */
+        @media (min-width: 992px) {
+            .app-container {
+                grid-template-columns: 350px 1fr;
+                padding: 25px;
+                margin-top: 0;
+                align-self: center;
+            }
         }
 
         /* Control Panel */
         .controls {
             background: rgba(0,0,0,0.4);
-            padding: 30px;
-            border-radius: 25px;
+            padding: 20px;
+            border-radius: 20px;
             border: 1px solid rgba(0,242,255,0.1);
         }
 
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--neon); margin-bottom: 30px; text-align: center; letter-spacing: 2px; }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: var(--neon); margin-bottom: 25px; text-align: center; letter-spacing: 2px; }
 
-        .field { margin-bottom: 25px; }
-        label { display: block; font-size: 0.75rem; text-transform: uppercase; color: #888; margin-bottom: 8px; letter-spacing: 1px; }
+        .field { margin-bottom: 20px; }
+        label { display: block; font-size: 0.7rem; text-transform: uppercase; color: #888; margin-bottom: 6px; letter-spacing: 1px; }
 
         input, select {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: #16213e;
             border: 1px solid #1f4068;
-            border-radius: 12px;
+            border-radius: 10px;
             color: white;
             font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
             outline: none;
-            transition: 0.3s;
         }
-
-        input:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(0,242,255,0.2); }
 
         button {
             width: 100%;
-            padding: 20px;
+            padding: 15px;
             background: linear-gradient(135deg, var(--neon), #0066ff);
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
             font-family: 'Orbitron', sans-serif;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: 0.3s;
         }
 
-        button:hover { transform: translateY(-3px); filter: brightness(1.2); letter-spacing: 1px; }
+        button:active { transform: scale(0.98); }
 
-        /* Dashboard */
-        .dashboard { padding: 20px; }
-
-        .material-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            background: rgba(255, 204, 0, 0.1);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            border-radius: 20px;
-            font-size: 0.7rem;
-            margin-bottom: 15px;
-        }
+        /* Dashboard & Stats Grid */
+        .dashboard { padding: 5px; }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            grid-template-columns: 1fr 1fr; /* 2 Columns on mobile */
+            gap: 12px;
+        }
+
+        /* 3 Columns on Tablets/Desktop */
+        @media (min-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         .card {
             background: rgba(255,255,255,0.03);
-            padding: 20px;
-            border-radius: 20px;
-            border-bottom: 2px solid transparent;
-            transition: 0.3s;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
         }
 
-        .card:hover { background: rgba(255,255,255,0.07); border-color: var(--neon); }
-        .card h4 { font-size: 0.7rem; color: #777; margin-bottom: 10px; }
-        .card p { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: white; }
+        .card h4 { font-size: 0.6rem; color: #777; margin-bottom: 8px; text-transform: uppercase; }
+        .card p { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: white; word-wrap: break-word; }
 
         .science-box {
-            margin-top: 25px;
-            padding: 25px;
-            background: linear-gradient(to right, rgba(0,242,255,0.05), transparent);
-            border-radius: 20px;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 242, 255, 0.03);
+            border-radius: 15px;
             border-left: 4px solid var(--neon);
         }
 
-        .science-box h3 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--neon); margin-bottom: 10px; }
-        .science-box p { font-size: 0.85rem; line-height: 1.6; color: #bdc3c7; }
+        .science-box h3 { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; color: var(--neon); margin-bottom: 8px; }
+        .science-box p { font-size: 0.8rem; line-height: 1.5; color: #bdc3c7; }
 
-        /* Animation */
         .solar-icon {
-            width: 100px;
-            margin-bottom: 20px;
-            animation: rotate 10s infinite linear;
+            width: 70px;
+            margin: 10px auto 20px;
+            display: block;
+            animation: rotate 12s infinite linear;
         }
 
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } }
+        .material-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 15px;
+            font-size: 0.65rem;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -143,17 +154,14 @@
 <div class="app-container">
     <div class="controls">
         <h1>SolarOS v3.0</h1>
-        
         <div class="field">
             <label>Voltage Signature (V)</label>
-            <input type="number" id="vIn" value="48">
+            <input type="number" id="vIn" value="48" inputmode="numeric">
         </div>
-
         <div class="field">
             <label>Array Density (Units)</label>
-            <input type="number" id="pIn" value="10">
+            <input type="number" id="pIn" value="10" inputmode="numeric">
         </div>
-
         <div class="field">
             <label>Cell Substrate</label>
             <select id="mIn">
@@ -162,16 +170,13 @@
                 <option value="perc">Mono-PERC (High Yield)</option>
             </select>
         </div>
-
         <button onclick="simulate()">Simulate Array</button>
     </div>
 
     <div class="dashboard">
-        <div style="text-align: center;">
-            <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" class="solar-icon">
-        </div>
+        <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" class="solar-icon" alt="Solar Icon">
         
-        <div id="materialTag" class="material-badge">Substrate: N-Type TOPCon</div>
+        <center><div id="materialTag" class="material-badge">Substrate: N-Type TOPCon</div></center>
         
         <div class="stats-grid">
             <div class="card">
@@ -179,30 +184,30 @@
                 <p id="outWatt">0.00 kW</p>
             </div>
             <div class="card">
-                <h4>Total Roof Area</h4>
+                <h4>Roof Area</h4>
                 <p id="outArea">0 ft²</p>
             </div>
             <div class="card">
-                <h4>Unit Dimensions</h4>
-                <p id="outDim">-</p>
+                <h4>Unit Dims</h4>
+                <p id="outDim" style="font-size: 0.8rem;">-</p>
             </div>
             <div class="card">
-                <h4>Material Life</h4>
+                <h4>Life</h4>
                 <p id="outLife">0 Years</p>
             </div>
             <div class="card">
-                <h4>Efficiency Range</h4>
+                <h4>Efficiency</h4>
                 <p id="outEff">0%</p>
             </div>
             <div class="card">
-                <h4>Storage Bank</h4>
+                <h4>Battery</h4>
                 <p id="outBatt">0 Units</p>
             </div>
         </div>
 
         <div class="science-box">
             <h3>Material Science Analysis</h3>
-            <p id="outSci">Select parameters and click simulate to analyze the chemical properties and physical dimensions of the solar array.</p>
+            <p id="outSci">Select parameters and click simulate to analyze.</p>
         </div>
     </div>
 </div>
@@ -215,7 +220,6 @@
 
         let w, l, wid, ar, life, eff, sci;
 
-        // Base Data based on Voltage
         if (v <= 12) {
             w = 180; l = 4.8; wid = 2.2; ar = 10.5;
         } else if (v > 12 && v <= 24) {
@@ -224,19 +228,17 @@
             w = 585; l = 7.8; wid = 3.8; ar = 29.6;
         }
 
-        // Material Science Logic
         if (material === "p-type") {
             life = 25; eff = "19-21%";
-            sci = "P-Type cells use boron-doped silicon. They are cost-effective but suffer from Light Induced Degradation (LID). Dimensions are standard industry grade.";
+            sci = "P-Type cells use boron-doped silicon. Reliable but prone to LID degradation.";
         } else if (material === "n-type") {
             w += 40; life = 30; eff = "22-25%";
-            sci = "N-Type TOPCon uses phosphorus-doped silicon. It has zero LID and better performance in high temperatures. Panels are slightly larger but much more efficient.";
+            sci = "N-Type TOPCon uses phosphorus-doped silicon. Higher efficiency and zero LID.";
         } else {
             w += 20; life = 25; eff = "21-22.5%";
-            sci = "Mono-PERC (Passivated Emitter and Rear Cell) adds a dielectric layer to capture more light. Best balance between cost and dimensions.";
+            sci = "Mono-PERC captures more light via reflective layers. Standard high-yield choice.";
         }
 
-        // Update UI
         document.getElementById('materialTag').innerText = "Substrate: " + material.toUpperCase();
         document.getElementById('outWatt').innerText = ((w * count) / 1000).toFixed(2) + " kW";
         document.getElementById('outArea').innerText = (ar * count).toFixed(1) + " ft²";
@@ -246,8 +248,6 @@
         document.getElementById('outBatt').innerText = Math.ceil(v/12) + " x 12V Batteries";
         document.getElementById('outSci').innerText = sci;
     }
-
-    // Run first time
     simulate();
 </script>
 
