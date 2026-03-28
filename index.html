@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolarOS v3.0 | Material Science Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon: #00f2ff;
+            --gold: #ffcc00;
+            --dark: #0a0f1d;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: radial-gradient(circle at bottom left, #0f172a, #020617);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 95%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        /* Control Panel */
+        .controls {
+            background: rgba(0,0,0,0.4);
+            padding: 30px;
+            border-radius: 25px;
+            border: 1px solid rgba(0,242,255,0.1);
+        }
+
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: var(--neon); margin-bottom: 30px; text-align: center; letter-spacing: 2px; }
+
+        .field { margin-bottom: 25px; }
+        label { display: block; font-size: 0.75rem; text-transform: uppercase; color: #888; margin-bottom: 8px; letter-spacing: 1px; }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            background: #16213e;
+            border: 1px solid #1f4068;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(0,242,255,0.2); }
+
+        button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--neon), #0066ff);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        button:hover { transform: translateY(-3px); filter: brightness(1.2); letter-spacing: 1px; }
+
+        /* Dashboard */
+        .dashboard { padding: 20px; }
+
+        .material-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 20px;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .card:hover { background: rgba(255,255,255,0.07); border-color: var(--neon); }
+        .card h4 { font-size: 0.7rem; color: #777; margin-bottom: 10px; }
+        .card p { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: white; }
+
+        .science-box {
+            margin-top: 25px;
+            padding: 25px;
+            background: linear-gradient(to right, rgba(0,242,255,0.05), transparent);
+            border-radius: 20px;
+            border-left: 4px solid var(--neon);
+        }
+
+        .science-box h3 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--neon); margin-bottom: 10px; }
+        .science-box p { font-size: 0.85rem; line-height: 1.6; color: #bdc3c7; }
+
+        /* Animation */
+        .solar-icon {
+            width: 100px;
+            margin-bottom: 20px;
+            animation: rotate 10s infinite linear;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="controls">
+        <h1>SolarOS v3.0</h1>
+        
+        <div class="field">
+            <label>Voltage Signature (V)</label>
+            <input type="number" id="vIn" value="48">
+        </div>
+
+        <div class="field">
+            <label>Array Density (Units)</label>
+            <input type="number" id="pIn" value="10">
+        </div>
+
+        <div class="field">
+            <label>Cell Substrate</label>
+            <select id="mIn">
+                <option value="p-type">P-Type Silicon (Standard)</option>
+                <option value="n-type">N-Type TOPCon (Next-Gen)</option>
+                <option value="perc">Mono-PERC (High Yield)</option>
+            </select>
+        </div>
+
+        <button onclick="simulate()">Simulate Array</button>
+    </div>
+
+    <div class="dashboard">
+        <div style="text-align: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" class="solar-icon">
+        </div>
+        
+        <div id="materialTag" class="material-badge">Substrate: N-Type TOPCon</div>
+        
+        <div class="stats-grid">
+            <div class="card">
+                <h4>System Power</h4>
+                <p id="outWatt">0.00 kW</p>
+            </div>
+            <div class="card">
+                <h4>Total Roof Area</h4>
+                <p id="outArea">0 ft²</p>
+            </div>
+            <div class="card">
+                <h4>Unit Dimensions</h4>
+                <p id="outDim">-</p>
+            </div>
+            <div class="card">
+                <h4>Material Life</h4>
+                <p id="outLife">0 Years</p>
+            </div>
+            <div class="card">
+                <h4>Efficiency Range</h4>
+                <p id="outEff">0%</p>
+            </div>
+            <div class="card">
+                <h4>Storage Bank</h4>
+                <p id="outBatt">0 Units</p>
+            </div>
+        </div>
+
+        <div class="science-box">
+            <h3>Material Science Analysis</h3>
+            <p id="outSci">Select parameters and click simulate to analyze the chemical properties and physical dimensions of the solar array.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function simulate() {
+        const v = parseInt(document.getElementById('vIn').value) || 0;
+        const count = parseInt(document.getElementById('pIn').value) || 0;
+        const material = document.getElementById('mIn').value;
+
+        let w, l, wid, ar, life, eff, sci;
+
+        // Base Data based on Voltage
+        if (v <= 12) {
+            w = 180; l = 4.8; wid = 2.2; ar = 10.5;
+        } else if (v > 12 && v <= 24) {
+            w = 460; l = 7.2; wid = 3.5; ar = 25.2;
+        } else {
+            w = 585; l = 7.8; wid = 3.8; ar = 29.6;
+        }
+
+        // Material Science Logic
+        if (material === "p-type") {
+            life = 25; eff = "19-21%";
+            sci = "P-Type cells use boron-doped silicon. They are cost-effective but suffer from Light Induced Degradation (LID). Dimensions are standard industry grade.";
+        } else if (material === "n-type") {
+            w += 40; life = 30; eff = "22-25%";
+            sci = "N-Type TOPCon uses phosphorus-doped silicon. It has zero LID and better performance in high temperatures. Panels are slightly larger but much more efficient.";
+        } else {
+            w += 20; life = 25; eff = "21-22.5%";
+            sci = "Mono-PERC (Passivated Emitter and Rear Cell) adds a dielectric layer to capture more light. Best balance between cost and dimensions.";
+        }
+
+        // Update UI
+        document.getElementById('materialTag').innerText = "Substrate: " + material.toUpperCase();
+        document.getElementById('outWatt').innerText = ((w * count) / 1000).toFixed(2) + " kW";
+        document.getElementById('outArea').innerText = (ar * count).toFixed(1) + " ft²";
+        document.getElementById('outDim').innerText = l + "ft x " + wid + "ft";
+        document.getElementById('outLife').innerText = life + " Years";
+        document.getElementById('outEff').innerText = eff;
+        document.getElementById('outBatt').innerText = Math.ceil(v/12) + " x 12V Batteries";
+        document.getElementById('outSci').innerText = sci;
+    }
+
+    // Run first time
+    simulate();
+</script>
+
+</body>
+</html>
