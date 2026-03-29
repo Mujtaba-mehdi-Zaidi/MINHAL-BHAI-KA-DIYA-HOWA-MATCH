@@ -3,32 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SolarOS v4.0 | Wattage Dimension Pro</title>
     
-    <title>SolarOS v3.0 | Material Science Edition</title>
-    <meta name="description" content="Advanced Solar Dimension & Material Analyst. Calculate system power, roof area, and efficiency based on voltage topology.">
-    <meta name="theme-color" content="#020617">
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/597/597177.png">
-
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --neon: #00f2ff;
             --gold: #ffcc00;
-            --glass: rgba(255, 255, 255, 0.07);
-            --safe-top: env(safe-area-inset-top);
-            --safe-bottom: env(safe-area-inset-bottom);
+            --glass: rgba(255, 255, 255, 0.08);
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Quicksand', sans-serif;
@@ -37,237 +23,174 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: calc(15px + var(--safe-top)) 15px calc(20px + var(--safe-bottom));
+            padding: 20px 15px;
         }
 
         .app-container {
             width: 100%;
-            max-width: 1100px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            max-width: 1000px;
             background: var(--glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 20px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
-        }
-
-        /* Responsive Layout Switch */
-        @media (min-width: 1024px) {
-            .app-container { flex-direction: row; align-items: stretch; padding: 35px; height: 85vh; }
-            .controls { flex: 0 0 380px; overflow-y: auto; }
-            .dashboard { flex: 1; overflow-y: auto; padding-left: 20px; }
-        }
-
-        .controls {
-            background: rgba(0,0,0,0.4);
+            border-radius: 25px;
             padding: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .header { text-align: center; margin-bottom: 30px; }
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--neon); font-size: 1.5rem; letter-spacing: 2px; }
+        p.subtitle { font-size: 0.8rem; color: #888; margin-top: 5px; }
+
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
             border-radius: 20px;
-            border: 1px solid rgba(0,242,255,0.15);
+            margin-bottom: 25px;
         }
 
-        h1 { 
-            font-family: 'Orbitron', sans-serif; 
-            font-size: 1.4rem; 
-            color: var(--neon); 
-            margin-bottom: 25px; 
-            text-align: center;
-            text-shadow: 0 0 15px rgba(0,242,255,0.4);
+        @media (min-width: 600px) {
+            .input-section { grid-template-columns: 1fr 1fr; }
         }
 
-        .field { margin-bottom: 20px; }
-        label { display: block; font-size: 0.7rem; text-transform: uppercase; color: #888; margin-bottom: 8px; letter-spacing: 1.5px; }
-
+        .field label { display: block; font-size: 0.7rem; color: var(--neon); margin-bottom: 8px; text-transform: uppercase; }
+        
         input, select {
             width: 100%;
             padding: 15px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(0, 242, 255, 0.2);
+            background: #16213e;
+            border: 1px solid #1f4068;
             border-radius: 12px;
             color: white;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
             outline: none;
-            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(0,242,255,0.2); }
-
         button {
-            width: 100%;
+            grid-column: 1 / -1;
             padding: 18px;
             background: linear-gradient(135deg, var(--neon), #0066ff);
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
             font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        button:active { transform: scale(0.96); }
-
-        /* Dashboard Styles */
-        .stats-grid {
+        .result-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-top: 20px;
         }
 
-        @media (min-width: 550px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 768px) { .result-grid { grid-template-columns: repeat(4, 1fr); } }
 
         .card {
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.05);
             padding: 20px 10px;
-            border-radius: 20px;
+            border-radius: 18px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
         }
 
-        .card:hover { background: rgba(0, 242, 255, 0.05); border-color: var(--neon); }
-        .card h4 { font-size: 0.6rem; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .card h4 { font-size: 0.6rem; color: #aaa; margin-bottom: 10px; text-transform: uppercase; }
         .card p { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: #fff; }
 
-        .science-box {
-            margin-top: 20px;
+        .info-box {
+            margin-top: 25px;
             padding: 20px;
-            background: linear-gradient(90deg, rgba(0,242,255,0.07), transparent);
-            border-radius: 18px;
+            background: rgba(0, 242, 255, 0.05);
             border-left: 4px solid var(--neon);
+            border-radius: 12px;
         }
 
-        .science-box h3 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--neon); margin-bottom: 8px; }
-        .science-box p { font-size: 0.85rem; line-height: 1.6; color: #bdc3c7; }
-
-        .solar-icon {
-            width: 80px;
-            margin: 0 auto 15px;
-            display: block;
-            filter: drop-shadow(0 0 15px var(--neon));
-            animation: rotate 20s infinite linear;
-        }
-
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .material-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: rgba(255, 204, 0, 0.1);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            border-radius: 15px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
+        .info-box h3 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--neon); margin-bottom: 10px; }
+        .info-box p { font-size: 0.85rem; line-height: 1.6; color: #ccc; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <section class="controls">
-        <h1>SOLAR OS v3.0</h1>
-        
-        <div class="field">
-            <label>Voltage Topology (V)</label>
-            <input type="number" id="vIn" value="48" inputmode="numeric" pattern="[0-9]*">
-        </div>
+    <div class="header">
+        <h1>SolarOS v4.0</h1>
+        <p class="subtitle">Wattage-to-Dimension Smart Engine</p>
+    </div>
 
+    <div class="input-section">
         <div class="field">
-            <label>Array Quantity (Units)</label>
-            <input type="number" id="pIn" value="12" inputmode="numeric" pattern="[0-9]*">
+            <label>Panel Wattage (W)</label>
+            <input type="number" id="wattIn" placeholder="e.g. 550" value="550">
         </div>
-
         <div class="field">
-            <label>Substrate Material</label>
-            <select id="mIn">
-                <option value="p-type">P-Type Silicon (Standard)</option>
-                <option value="n-type" selected>N-Type TOPCon (Next-Gen)</option>
-                <option value="perc">Mono-PERC (High Yield)</option>
+            <label>Technology</label>
+            <select id="techIn">
+                <option value="n-type">N-Type TOPCon</option>
+                <option value="p-type">P-Type Mono</option>
             </select>
         </div>
+        <button onclick="calculate()">Calculate Dimensions</button>
+    </div>
 
-        <button onclick="simulate()">RUN SIMULATION</button>
-    </section>
+    <div class="result-grid">
+        <div class="card"><h4>Length</h4><p id="outL">-</p></div>
+        <div class="card"><h4>Width</h4><p id="outW">-</p></div>
+        <div class="card"><h4>Area (Sq.ft)</h4><p id="outA">-</p></div>
+        <div class="card"><h4>Weight (kg)</h4><p id="outKg">-</p></div>
+    </div>
 
-    <main class="dashboard">
-        <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" class="solar-icon" alt="Solar Engine">
-        
-        <center><div id="materialTag" class="material-badge">SUBSTRATE: N-TYPE</div></center>
-        
-        <div class="stats-grid">
-            <div class="card"><h4>Est. Power</h4><p id="outWatt">0.0 kW</p></div>
-            <div class="card"><h4>Footprint</h4><p id="outArea">0 ft²</p></div>
-            <div class="card"><h4>Dimensions</h4><p id="outDim" style="font-size: 0.8rem;">-</p></div>
-            <div class="card"><h4>Lifecycle</h4><p id="outLife">0 Yrs</p></div>
-            <div class="card"><h4>Efficiency</h4><p id="outEff">0%</p></div>
-            <div class="card"><h4>Storage</h4><p id="outBatt">0 Units</p></div>
-        </div>
-
-        <div class="science-box">
-            <h3>Material Science Insights</h3>
-            <p id="outSci">System ready. Enter parameters to analyze the molecular and physical properties of your solar array.</p>
-        </div>
-    </main>
+    <div class="info-box">
+        <h3>Technical Analysis</h3>
+        <p id="outDesc">Enter panel wattage to see physical specifications and material insights.</p>
+    </div>
 </div>
 
 <script>
-    function simulate() {
-        // Inputs
-        const v = parseInt(document.getElementById('vIn').value) || 0;
-        const count = parseInt(document.getElementById('pIn').value) || 0;
-        const material = document.getElementById('mIn').value;
+    function calculate() {
+        const watts = parseInt(document.getElementById('wattIn').value);
+        const tech = document.getElementById('techIn').value;
+        
+        let length, width, weight, area, desc;
 
-        // Variables
-        let w, l, wid, ar, life, eff, sci;
-
-        // Voltage Logic (Physical Class)
-        if (v <= 12) { 
-            w = 180; l = 4.8; wid = 2.2; ar = 10.5; 
-        } else if (v <= 24) { 
-            w = 460; l = 7.2; wid = 3.5; ar = 25.2; 
-        } else { 
-            w = 585; l = 7.8; wid = 3.8; ar = 29.6; 
-        }
-
-        // Material Logic
-        if (material === "p-type") {
-            life = 25; eff = "19-21%";
-            sci = "P-Type cells use boron-doped silicon. They are reliable but susceptible to Light Induced Degradation (LID) over time.";
-        } else if (material === "n-type") {
-            w += 45; life = 30; eff = "22-25.5%";
-            sci = "N-Type TOPCon uses phosphorus-doped silicon. It offers near-zero LID and significantly better performance in high-temperature regions like Pakistan.";
+        // Realistic Industry Logic
+        if (watts < 200) {
+            length = 1480; width = 670; weight = 11;
+            desc = "Chota panel (usually 12V systems). Ismein purani M6 cell technology use hoti hai.";
+        } else if (watts >= 200 && watts < 400) {
+            length = 1640; width = 992; weight = 19;
+            desc = "Medium range panel. Residential rooftops ke liye munasib hai.";
+        } else if (watts >= 400 && watts < 500) {
+            length = 1722; width = 1134; weight = 21.5;
+            desc = "Modern High-Efficiency panel. Ismein multi-busbar technology hoti hai.";
+        } else if (watts >= 500 && watts < 600) {
+            length = 2278; width = 1134; weight = 28.5;
+            desc = "Utility Scale panel (Industrial). M10 cells ka istemal hota hai. Pakistan mein sabse zyada 550W isi size mein aate hain.";
         } else {
-            w += 25; life = 25; eff = "21-22.5%";
-            sci = "Mono-PERC technology adds a passivation layer to the rear of the cell, reflecting light back for maximum photon capture.";
+            length = 2384; width = 1303; weight = 34;
+            desc = "Ultra-High Power (G12 cells). Ye kaafi bhari hote hain aur inke liye heavy structural framing chahiye hoti hai.";
         }
 
-        // UI Update
-        document.getElementById('materialTag').innerText = "SUBSTRATE: " + material.toUpperCase();
-        document.getElementById('outWatt').innerText = ((w * count) / 1000).toFixed(2) + " kW";
-        document.getElementById('outArea').innerText = Math.round(ar * count) + " ft²";
-        document.getElementById('outDim').innerText = l + " x " + wid + " ft";
-        document.getElementById('outLife').innerText = life + " Years";
-        document.getElementById('outEff').innerText = eff;
-        document.getElementById('outBatt').innerText = Math.ceil(v / 12) + " x 12V";
-        document.getElementById('outSci').innerText = sci;
-
-        // Mobile Scroll to Results
-        if (window.innerWidth < 1024) {
-            document.querySelector('.dashboard').scrollIntoView({ behavior: 'smooth' });
+        // Material Science impact
+        if (tech === 'n-type') {
+            desc += " N-Type substrate ki wajah se ye panel dhoop mein kam garam hota hai aur zyada output deta hai.";
         }
+
+        // Calculations
+        area = ((length * width) / 92903).toFixed(2); // Convert mm2 to sq.ft
+
+        // Display
+        document.getElementById('outL').innerText = length + " mm";
+        document.getElementById('outW').innerText = width + " mm";
+        document.getElementById('outA').innerText = area;
+        document.getElementById('outKg').innerText = weight;
+        document.getElementById('outDesc').innerText = desc;
     }
 
-    // Auto-run on load
-    window.onload = simulate;
+    window.onload = calculate;
 </script>
 
 </body>
